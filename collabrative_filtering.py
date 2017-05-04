@@ -20,13 +20,7 @@ class collabrative_filtering:
 
     def person_corrolations(self, person_1, person_2):
         #TODO compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)
-        counterA = Counter(person_1)
-        counterB = Counter(person_2)
-        terms = set(counterA).union(counterB)
-        dotprod = sum(counterA.get(k, 0) * counterB.get(k, 0) for k in terms)
-        magA = math.sqrt(sum(counterA.get(k, 0) ** 2 for k in terms))
-        magB = math.sqrt(sum(counterB.get(k, 0) ** 2 for k in terms))
-        return dotprod / (magA * magB)
+        return 1
 
     def most_similar_user(self, person, number_of_users = 3):
         users = {}
@@ -46,15 +40,16 @@ class collabrative_filtering:
         for u, w in similar_users.iteritems():
             for i in self.data[u]:
                 if i not in self.data[person]:
-                    recs[i] = recs.get(w, 0) + w
-                    user_count[i] = user_count.get(w, 0) + 1
+                    recs[i] = recs.get(i, 0) + (1 * w)
+                    user_count[i] = user_count.get(i, 0) + 1
 
         for k, v in recs.iteritems():
             recs[k] = v/user_count[k]
 
         return sorted(recs.items(), key=operator.itemgetter(1), reverse=True)
 
-
+    def time_decay(self,v , c, t):
+        pass
 
 if __name__ == '__main__':
 
